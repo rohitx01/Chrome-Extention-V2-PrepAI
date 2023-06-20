@@ -6,6 +6,23 @@ const passwordElement = document.getElementById("password");
 const signInButton = document.getElementById("signInButton");
 const signOutButton = document.getElementById("signOutButton");
 
+// Span listeners
+const runningSpan = document.getElementById("runningSpan");
+const stoppedSpan = document.getElementById("stoppedSpan");
+
+const hideElement = (elem) => {
+  elem.style.display = "none";
+};
+const showElement = (elem) => {
+  elem.style.display = " ";
+};
+const disableElement = (elem) => {
+  elem.disabled = true;
+};
+const eisableElement = (elem) => {
+  elem.disabled = false;
+};
+
 signInButton.onclick = () => {
   const prefs = {
     emailId: emailIdElement.value,
@@ -18,8 +35,8 @@ signOutButton.onclick = () => {
   chrome.runtime.sendMessage({ event: "onStop" });
 };
 
-chrome.storage.local.get(["emailId", "password"], (result) => {
-  const { emailId, password } = result;
+chrome.storage.local.get(["emailId", "password", "emails"], (result) => {
+  const { emailId, password, emails } = result;
 
   if (emailId) {
     emailIdElement.value = emailId;
@@ -28,4 +45,11 @@ chrome.storage.local.get(["emailId", "password"], (result) => {
   if (password) {
     passwordElement.value = password;
   }
+  //   if (isRunning) {
+  //     showElement(runningSpan);
+  //     hideElement(stoppedSpan);
+  //   } else {
+  //     showElement(stoppedSpan);
+  //     hideElement(runningSpan);
+  //   }
 });
