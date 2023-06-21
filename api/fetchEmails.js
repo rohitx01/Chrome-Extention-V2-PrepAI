@@ -65,28 +65,28 @@
 //     .catch((error) => console.log("Error:", error));
 // }
 
-const EMAIL_ENDPOINT = "https://stagingapi.prepai.io/login";
+// const EMAIL_ENDPOINT = "https://stagingapi.prepai.io/login";
 
-export default function fetchEmail(prefs) {
-  return fetch(EMAIL_ENDPOINT, {
-    method: "POST",
-    body: JSON.stringify({
-      prefs,
-    }),
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      // Process the API response data as needed
-      return data;
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
+// export default function fetchEmail(prefs) {
+//   return fetch(EMAIL_ENDPOINT, {
+//     method: "POST",
+//     body: JSON.stringify({
+//       prefs,
+//     }),
+//     headers: {
+//       "Content-type": "application/json; charset=UTF-8",
+//     },
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log(data);
+//       // Process the API response data as needed
+//       return data;
+//     })
+//     .catch((error) => {
+//       console.error("Error:", error);
+//     });
+// }
 
 // const EMAIL_ENDPOINT = "https://stagingapi.prepai.io/login";
 
@@ -111,3 +111,34 @@ export default function fetchEmail(prefs) {
 //       console.error("Error:", error);
 //     });
 // }
+
+const EMAIL_ENDPOINT = "https://stagingapi.prepai.io/login";
+
+export default function fetchEmail() {
+  chrome.storage.local.get(["prefs"], (result) => {
+    const { prefs } = result;
+
+    if (prefs && prefs.emailId) {
+      const { emailId, password } = prefs;
+      fetch(EMAIL_ENDPOINT, {
+        method: "POST",
+        body: JSON.stringify({
+          email: emailId,
+          password: password,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          // Process the API response data as needed
+          return data;
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  });
+}
